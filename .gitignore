@@ -8,3 +8,8 @@
 *.pyc
 /authAPI.py
 /migrations/
+/migrations/versions/
+/migrations/alembic.ini
+/migrations/env.py
+/migrations/README
+/migrations/script.py.mako
