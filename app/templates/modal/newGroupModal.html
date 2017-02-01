@@ -1,0 +1,46 @@
+<div class="modal fade" id="newGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog"  style="width:400px;">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    New Group
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form method="post" name="newGroupFrom" id="newGroupFrom">
+                {{ newGroupForm.groupName.label }}
+                {{ newGroupForm.groupName(class_='form-control ')}}
+                {% for error in newGroupForm.groupName.errors %}
+                    <p>{{error}}</p>
+                {% endfor %}
+                {{ newGroupForm.groupDesc.label }}
+                {{ newGroupForm.groupDesc(class_='form-control ')}}
+                {% for error in newGroupForm.groupDesc.errors %}
+                    <p>{{error}}</p>
+                {% endfor %}
+                {{ newGroupForm.groupUsers.label }}
+                {{ newGroupForm.groupUsers(class_='form-control')}}
+                {% for error in newGroupForm.groupUsers.errors %}
+                    <p>{{error}}</p>
+                {% endfor %}
+                <br><br>
+                <div class="input-group" style="float:right;">
+                    {{ newGroupForm.csrf_token }}
+                    <a href="#" data-dismiss="modal">Cancel</a> &nbsp
+                    {{ newGroupForm.groupSubmit() }}
+                </div>
+                    <br><br>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

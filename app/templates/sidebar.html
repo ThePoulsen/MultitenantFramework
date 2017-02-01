@@ -1,0 +1,58 @@
+{% set parentNav = [
+    ('User', 'fa-home', 'fa-chevron-down', 'index', 'Home'),
+    ('siteAdmin', 'fa-cog', 'fa-chevron-down', 'admin', 'Site Admin'),
+    ('Administrator', 'fa-cog', 'fa-chevron-down', 'settings', 'Settings'),
+    ('User', 'fa-credit-card', 'fa-chevron-down', 'userProfile', 'Profile'),
+] -%}
+
+{% set childNav = [
+    ('User', 'indexView', 'Forside', 'index'),
+
+    ('siteAdmin', 'adminBP.adminView', 'Admin', 'admin'),
+
+    ('Administrator', 'settingsBP.companyView', 'Company', 'settings'),
+    ('Administrator', 'settingsBP.settingsView', 'Program settings', 'settings'),
+    ('Administrator', 'userBP.userView', 'User Management', 'settings'),
+    ('Administrator', 'userBP.groupView', 'User / Email groups', 'settings'),
+
+    ('User', 'userBP.userProfileView', 'Show profile', 'userProfile'),
+    ('User', 'userBP.changePasswordView', 'Change password', 'userProfile'),
+
+
+] -%}
+
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+<div class="menu_section">
+<ul class="nav side-menu">
+
+
+{% if session['token'] %}
+    {% for auth, class, span, title, header in parentNav %}
+    {% for role in session['roles'] %}
+    {% if auth == role %}
+        <li><a ><i class="fa {{class|e}}"></i> {{header|safe}} <span class="fa {{span|e}}"></span></a>
+            <ul class="nav child_menu">
+                {% for auth2,  view, header2, parent in childNav %}
+                {% for role2 in session['roles'] %}
+                {% if auth2 == role2 %}
+                {% if parent == title %}
+                    <li>
+                        <a href="{{url_for(view|e)}}">{{header2|e}}</a>
+                    </li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% else %}
+<li><a id="registerView" class="" href="{{url_for('authBP.registerView')}}">Register</a></li>
+{% endif %}
+
+
+</ul>
+</div>
+</div>

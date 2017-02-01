@@ -1,0 +1,63 @@
+body {
+    background: #F7F7F7;
+}
+
+.topNavLogin {
+    padding-top:  8px;
+    padding-left: 5px;
+}
+
+#password {
+    background-position: 0 !important;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
+
+.flashes {
+    padding:0px;
+}
+
+.required #required {
+    padding-left: 34px;
+    background-image: url(/static/images/red_asterisk.gif);
+    background-position: left 5px top 5px;
+    background-repeat: no-repeat;
+}
+
+textarea.form-control {
+    max-width: 100%;
+}
+
+.tableButtons {
+    width:20px;
+}
+
+.main_container{
+    min-width: 1024px !important;
+    background: #2A3F54;
+}
+
+table {
+    table-layout:fixed;
+    width:100%;
+}
+
+.table>tbody>tr>th {
+    border-top: 0px;
+}
+
+.site_title{
+    height:100px;
+    padding-left:15px;
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+.main_menu_side {
+    padding-top: 10px;
+}

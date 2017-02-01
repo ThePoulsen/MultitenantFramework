@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='select2-4.0.3/dist/css/select2.min.css') }}">
+{% endblock %}
+{% block title %}{{title|safe}}{% endblock %}
+{% block content %}
+<div style="width:{{formWidth|safe}}px;">
+<div class="x_panel">
+<div class="x_title">
+<h2>{{contentTitle|safe}}</h2>
+<div class="clearfix"></div>
+</div>
+<div class="x_content">
+<form method="post" >
+    {{ form.userName.label }}
+    {{ form.userName(class_='form-control ')}}
+    {% for error in form.userName.errors %}
+        <p>{{error}}</p>
+    {% endfor %}
+    <br>
+    {{ form.userEmail.label }}
+    {{ form.userEmail(class_='form-control ')}}
+    {% for error in form.userEmail.errors %}
+        <p>{{error}}</p>
+    {% endfor %}
+    <br>
+    {{ form.userPhone.label }}
+    {{ form.userPhone(class_='form-control ')}}
+    {% for error in form.userPhone.errors %}
+        <p>{{error}}</p>
+    {% endfor %}
+    <br>
+    {{ form.userRole.label }}<br>
+    {{ form.userRole(class_='radio')}}
+    {% for error in form.userRole.errors %}
+        <p>{{error}}</p>
+    {% endfor %}
+
+    {{ form.userGroups.label }}
+    {{ form.userGroups(class_='form-control')}}
+    {% for error in form.userGroups.errors %}
+        <p>{{error}}</p>
+    {% endfor %}
+    <br>
+    <div class="input-group" style="float:right;">
+        {{ form.csrf_token }}
+        <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
+        {{form.userSubmit()}}
+    </div>
+</form>
+
+</div>
+</div>
+</div>
+
+{% endblock %}
+{% block foot %}
+{{ super() }}
+<script src="{{url_for('static', filename='select2-4.0.3/dist/js/select2.full.min.js')}}"></script>
+<script type="text/javascript">
+  $('select').select2({
+      width: '100%'
+  });
+</script>
+{% endblock %}
