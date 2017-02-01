@@ -4,7 +4,7 @@ from app import app, mail
 from flask import g, flash, session, redirect, url_for, abort, render_template
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Message
-import requests, json, re
+import requests, json, re, sqlalchemy
 from wtforms import widgets, validators
 from functools import wraps
 from authAPI import authAPI
@@ -95,3 +95,26 @@ def forbidden(e):
 @app.errorhandler(404)
 def notFound(e):
     pass
+
+# SQL alchemy xml data type
+class XMLType(sqlalchemy.types.UserDefinedType):
+    def get_col_spec(self):
+        return 'XML'
+
+    def bind_processor(self, dialect):
+        def process(value):
+            if value is not None:
+                if isinstance(value, str):
+                    return value
+                else:
+                    return etree.tostring(value)
+            else:
+                return None
+        return process
+
+    def result_processor(self, dialect, coltype):
+        def process(value):
+            if value is not None:
+                value = etree.fromstring(value)
+            return value
+        return process
