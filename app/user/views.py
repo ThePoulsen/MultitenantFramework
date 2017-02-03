@@ -6,8 +6,8 @@ from forms import changePasswordForm, userForm, groupForm
 import requests, flask_sijax
 from app.sijax.handler import SijaxHandler
 from authAPI import authAPI
-from groupCRUD import getGroups, postGroup, deleteGroup, getGroup, putGroup
-from userCRUD import getUsers, getUser, postUser, putUser, deleteUser
+from app.crud.groupCRUD import getGroups, postGroup, deleteGroup, getGroup, putGroup
+from app.crud.userCRUD import getUsers, getUser, postUser, putUser, deleteUser
 
 userBP = Blueprint('userBP', __name__, template_folder='templates')
 

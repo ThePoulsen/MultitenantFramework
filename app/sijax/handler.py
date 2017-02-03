@@ -1,7 +1,7 @@
 ## -*- coding: utf-8 -*-
 import json
 from services import sijaxSuccess
-from app.user.groupCRUD import postGroup, checkGroup
+from app.crud.groupCRUD import postGroup, checkGroup
 
 class SijaxHandler(object):
     """A container class for all Sijax handlers.
