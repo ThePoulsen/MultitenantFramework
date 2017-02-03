@@ -185,6 +185,7 @@ def groupView(function=None, id=None):
     kwargs = {'title':'User groups',
               'width':'600',
               'formWidth':'350',
+              'contentTitle':'Add new user Group',
               'tableColumns':['User group','Description' ,'Users assigned to group']}
 
     if function == None:
@@ -235,4 +236,4 @@ def groupView(function=None, id=None):
                 else:
                     apiMessage(newGroup)
                     return redirect(url_for('userBP.groupView'))
-        return render_template('user/groupForm.html', form=form)
+        return render_template('user/groupForm.html', form=form, **kwargs)

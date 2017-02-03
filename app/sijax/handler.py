@@ -37,7 +37,7 @@ class SijaxHandler(object):
                 obj_response.html('#'+r[0]+'Validator', r[1])
 
         elif grpExists:
-            obj_response.html('#flashDiv', sijaxSuccess('The group already exist'))
+            obj_response.html('#groupNameValidator', sijaxSuccess('The group already exist'))
 
         else:
             grp = postGroup(dataDict)
@@ -45,6 +45,7 @@ class SijaxHandler(object):
                 groupID = grp['id']
                 for r in required:
                     obj_response.html('#'+r+'Validator', '')
+                obj_response.script("$('#newGroupFrom')[0].reset();")
                 obj_response.script("$('#newGroupModal').modal('hide')")
                 obj_response.script("$('#userGroups').append($('<option></option>').attr('value', '{}').attr('selected', 'true').text('{}'));".format(groupID,groupName))
                 obj_response.html('#flashDiv', sijaxSuccess('The group has been added'))

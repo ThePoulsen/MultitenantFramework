@@ -13,7 +13,7 @@ settingsBP = Blueprint('settingsBP', __name__, template_folder='templates')
 @loginRequired
 def companyView():
     form = companyForm()
-    kwargs = {'title':'title',
+    kwargs = {'title':'Company information',
               'formWidth':'350'}
     return render_template('settings/companyView.html', form=form, **kwargs)
 
@@ -21,6 +21,6 @@ def companyView():
 @requiredRole(u'Administrator')
 @loginRequired
 def settingsView():
-    kwargs = {'title':'title',
+    kwargs = {'title':'Settings',
               'formWidth':'350'}
     return render_template('settings/settingsView.html', **kwargs)
