@@ -29,3 +29,11 @@ def getGroup(id, includes=None):
         return authAPI(endpoint='userGroup/'+str(id)+includeString, method='get', token=session['token'])
     else:
         return authAPI(endpoint='userGroup/'+str(id), method='get', token=session['token'])
+
+def checkGroup(groupName):
+    groups = getGroups()['groups']
+    exists = False
+    for g in groups:
+        if g['name'] == groupName:
+            exists = True
+    return exists

@@ -75,14 +75,11 @@
             <div class="modal-body">
                 <form method="post" name="newGroupFrom" id="newGroupFrom">
                 {{ grpForm.groupName.label }}
-                {{ grpForm.groupName(class_='form-control ')}}
+                {{ grpForm.groupName(class_='form-control')}}
                 <p id="groupNameValidator"></p>
                 {{ grpForm.groupDesc.label }}
                 {{ grpForm.groupDesc(class_='form-control ')}}
                 <p id="groupDescValidator"></p>
-                {{ grpForm.groupUsers.label }}
-                {{ grpForm.groupUsers(class_='form-control')}}
-
                 <br><br>
                 <div class="input-group" style="float:right;">
                     {{ grpForm.csrf_token }}
@@ -122,7 +119,7 @@ $(function() {
         //Get form values
         var values = Sijax.getFormValues('#newGroupFrom');
         //Send form values to sijax handler
-        Sijax.request('groupModal', [values]);
+        Sijax.request('userFormGroupModal', [values]);
         //Prevent the form from being submitted
         return false;
     });
