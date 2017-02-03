@@ -1,6 +1,4 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-# project/manage.py
 
 from flask_script import Server,Manager
 from flask_sqlalchemy import SQLAlchemy

@@ -17,7 +17,7 @@ class userForm(FlaskForm):
     userSubmit = SubmitField('OK')
 
 class groupForm(FlaskForm):
-    groupName = StringField('Name', [InputRequired('Please enter a group name')])
+    groupName = StringField('Name', validators=[InputRequired('Please enter a group name')])
     groupDesc = TextAreaField('Description')
-    groupUsers = SelectMultipleField('Users', validators=[], choices=[], widget=select2MultipleWidget())
+    groupUsers = SelectMultipleField('Users', validators=[], choices=[], widget=select2MultipleWidget(), _name='test')
     groupSubmit = SubmitField('OK')

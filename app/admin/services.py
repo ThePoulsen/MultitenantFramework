@@ -43,7 +43,6 @@ class select2Widget(widgets.Select):
 class select2MultipleWidget(widgets.Select):
     def __call__(self, field, **kwargs):
         kwargs.setdefault('data-role', u'select2')
-
         allow_blank = getattr(field, 'allow_blank', False)
         if allow_blank and not self.multiple:
             kwargs['data-allow-blank'] = u'1'

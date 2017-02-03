@@ -1,5 +1,4 @@
 ## -*- coding: utf-8 -*-
-## project/app/settings/views.py
 
 from flask import Blueprint, render_template, url_for, g, request, redirect, session, json
 from app.admin.services import requiredRole, loginRequired

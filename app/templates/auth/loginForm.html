@@ -13,17 +13,17 @@
 </div>
 <div class="x_content">
 <form action="{{url_for('authBP.loginView')}}" method="post" >
-    {{ form.regNo.label }}
+    {% endif %}{{ form.regNo.label }}
     {{ form.regNo(class_='form-control ')}}<br>
     {% for error in form.regNo.errors %}
         <p>{{error}}</p>
     {% endfor %}
-    {{ form.email.label }}
+    {% endif %}{{ form.email.label }}
     {{ form.email(autocomplete="false", class_='form-control ')}}<br>
     {% for error in form.email.errors %}
         <p>{{error}}</p>
     {% endfor %}
-    {{ form.password.label }}
+    {% endif %}{{ form.password.label }}
     {{ form.password(autocomplete="new-password", class_='form-control ')}}<br>
     {% for error in form.password.errors %}
         <p>{{error}}</p>

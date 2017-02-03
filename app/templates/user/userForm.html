@@ -12,55 +12,121 @@
 <div class="clearfix"></div>
 </div>
 <div class="x_content">
-<form method="post" >
-    {{ form.userName.label }}
-    {{ form.userName(class_='form-control ')}}
-    {% for error in form.userName.errors %}
+
+
+<form method="post" name="userForm" id="userForm">
+    {{ usrForm.userName.label }}
+    {{ usrForm.userName(class_='form-control ')}}
+    {% for error in usrForm.userName.errors %}
         <p>{{error}}</p>
     {% endfor %}
     <br>
-    {{ form.userEmail.label }}
-    {{ form.userEmail(class_='form-control ')}}
-    {% for error in form.userEmail.errors %}
+    {{ usrForm.userEmail.label }}
+    {{ usrForm.userEmail(class_='form-control ')}}
+    {% for error in usrForm.userEmail.errors %}
         <p>{{error}}</p>
     {% endfor %}
     <br>
-    {{ form.userPhone.label }}
-    {{ form.userPhone(class_='form-control ')}}
-    {% for error in form.userPhone.errors %}
+    {{ usrForm.userPhone.label }}
+    {{ usrForm.userPhone(class_='form-control ')}}
+    {% for error in usrForm.userPhone.errors %}
         <p>{{error}}</p>
     {% endfor %}
     <br>
-    {{ form.userRole.label }}<br>
-    {{ form.userRole(class_='radio')}}
-    {% for error in form.userRole.errors %}
+    {{ usrForm.userRole.label }}<br>
+    {{ usrForm.userRole(class_='radio')}}
+    {% for error in usrForm.userRole.errors %}
         <p>{{error}}</p>
     {% endfor %}
 
-    {{ form.userGroups.label }}
-    {{ form.userGroups(class_='form-control')}}
-    {% for error in form.userGroups.errors %}
+    {{ usrForm.userGroups.label }}
+    <div class="input-group">
+    {{ usrForm.userGroups(class_='form-control')}}
+    {% for error in usrForm.userGroups.errors %}
         <p>{{error}}</p>
     {% endfor %}
-    <br>
+    <span class="input-group-btn">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#newGroupModal">New</button></span></div>
+    <br><br>
     <div class="input-group" style="float:right;">
-        {{ form.csrf_token }}
+        {{ usrForm.csrf_token }}
         <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
-        {{form.userSubmit()}}
+        {{usrForm.userSubmit()}}
     </div>
 </form>
 
-</div>
-</div>
-</div>
+<!-- Modal -->
+<div class="modal" id="newGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog"  style="width:400px;">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    New Group
+                </h4>
+            </div>
 
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form method="post" name="newGroupFrom" id="newGroupFrom">
+                {{ grpForm.groupName.label }}
+                {{ grpForm.groupName(class_='form-control ')}}
+                <p id="groupNameValidator"></p>
+                {{ grpForm.groupDesc.label }}
+                {{ grpForm.groupDesc(class_='form-control ')}}
+                <p id="groupDescValidator"></p>
+                {{ grpForm.groupUsers.label }}
+                {{ grpForm.groupUsers(class_='form-control')}}
+
+                <br><br>
+                <div class="input-group" style="float:right;">
+                    {{ grpForm.csrf_token }}
+                    <a href="#" onclick="window.history.back();">Cancel</a> &nbsp
+                    {{ grpForm.groupSubmit() }}
+                </div>
+                    <br><br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
 {% endblock %}
 {% block foot %}
 {{ super() }}
-<script src="{{url_for('static', filename='select2-4.0.3/dist/js/select2.full.min.js')}}"></script>
+<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+<script type="text/javascript">{{ g.sijax.get_js()|safe }}</script>
+
+<!--Form error handler-->
 <script type="text/javascript">
-  $('select').select2({
-      width: '100%'
-  });
+    var formErrors = {% if grpForm.errors %}true{% else %}false{% endif %};
+
+    $(document).ready(function() {
+        if (formErrors) {
+            $('.modal').modal('show');
+        }
+    });
 </script>
+
+<!--Form sijax submission-->
+<script type="text/javascript">
+$(function() {
+    $('#newGroupFrom').bind('submit', function() {
+        //Get form values
+        var values = Sijax.getFormValues('#newGroupFrom');
+        //Send form values to sijax handler
+        Sijax.request('groupModal', [values]);
+        //Prevent the form from being submitted
+        return false;
+    });
+});
+</script>
+
 {% endblock %}

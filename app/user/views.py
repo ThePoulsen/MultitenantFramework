@@ -1,8 +1,10 @@
 ## -*- coding: utf-8 -*-
+
 from flask import Blueprint, session, render_template, url_for, jsonify, json, g, redirect, request
 from app.admin.services import loginRequired, requiredRole, errorMessage, successMessage, apiMessage, sendMail
 from forms import changePasswordForm, userForm, groupForm
-import requests
+import requests, flask_sijax
+from app.sijax.handler import SijaxHandler
 from authAPI import authAPI
 from groupCRUD import getGroups, postGroup, deleteGroup, getGroup, putGroup
 from userCRUD import getUsers, getUser, postUser, putUser, deleteUser
@@ -43,9 +45,9 @@ def changePasswordView():
 def resetPasswordView():
     pass
 
-@userBP.route('/user', methods=['GET'])
-@userBP.route('/user/<string:function>', methods=['GET', 'POST'])
-@userBP.route('/user/<string:function>/<int:id>', methods=['GET', 'POST'])
+@flask_sijax.route(userBP, '/user', methods=['GET'])
+@flask_sijax.route(userBP, '/user/<string:function>', methods=['GET', 'POST'])
+@flask_sijax.route(userBP, '/user/<string:function>/<int:id>', methods=['GET', 'POST'])
 @requiredRole(u'Administrator')
 @loginRequired
 def userView(id=None, function=None):
@@ -89,30 +91,34 @@ def userView(id=None, function=None):
                     role = 'Administrator'
                 elif r['title'] == 'Superuser':
                     role = 'Superuser'
-            newGroupForm = groupForm()
-            form = userForm(name = usr['userName'],
+            grpForm = groupForm()
+            usrForm = userForm(name = usr['userName'],
                             email = usr['userEmail'],
                             phone = usr['userPhone'],
                             groups = [str(r['id']) for r in usr['userGroups']],
                             role = role)
 
             # Get all groups
-            form.groups.choices = [(str(r['id']),r['name']) for r in getGroups()['userGroups']]
+            usrForm.groups.choices = [(str(r['id']),r['name']) for r in getGroups()['userGroups']]
 
-            if form.validate_on_submit():
-                dataDict = {'name':form.userName.data,
-                            'email':form.userEmail.data,
-                            'phone':form.userPhone.data}
+            if g.sijax.is_sijax_request:
+                g.sijax.register_object(SijaxHandler)
+                return g.sijax.process_request()
+
+            if usrForm.validate_on_submit():
+                dataDict = {'name':usrForm.userName.data,
+                            'email':usrForm.userEmail.data,
+                            'phone':usrForm.userPhone.data}
 
                 roles = ['User']
-                if form.userRole.data == 'Superuser':
+                if usrForm.userRole.data == 'Superuser':
                     roles.append('Superuser')
-                elif form.userRole.data == 'Administrator':
+                elif usrForm.userRole.data == 'Administrator':
                     roles.append('Superuser')
                     roles.append('Administrator')
 
                 dataDict['userRoles'] = roles
-                dataDict['userGroups'] = form.userGroups.data
+                dataDict['userGroups'] = usrForm.userGroups.data
                 updateUser = putUser(dataDict=dataDict, id=id)
                 if not 'error' in updateUser:
                     apiMessage(updateUser)
@@ -120,29 +126,33 @@ def userView(id=None, function=None):
                 else:
                     apiMessage(updateUser)
 
-            return render_template('user/userForm.html', form=form, newGroupForm=newGroupForm, **kwargs)
+            return render_template('user/userForm.html', usrForm=usrForm, grpForm=grpForm, **kwargs)
         elif function == 'new':
-            form = userForm(userRole='User')
-            newGroupForm = groupForm()
-            newGroupForm.groupUsers.choices = [(str(r['id']),r['email']) for r in getUsers()['users']]
+            usrForm = userForm(userRole='User')
+            grpForm = groupForm()
+            grpForm.groupUsers.choices = [(str(r['id']),r['email']) for r in getUsers()['users']]
             kwargs['contentTitle'] = 'New user'
             groups = [(str(r['id']),r['name']) for r in getGroups()['groups']]
-            form.userGroups.choices = groups
+            usrForm.userGroups.choices = groups
 
-            if form.validate_on_submit():
-                dataDict = {'name':form.userName.data,
-                            'email':form.userEmail.data,
-                            'phone':form.userPhone.data}
+            if g.sijax.is_sijax_request:
+                g.sijax.register_object(SijaxHandler)
+                return g.sijax.process_request()
+
+            if usrForm.validate_on_submit():
+                dataDict = {'name':usrForm.userName.data,
+                            'email':usrForm.userEmail.data,
+                            'phone':usrForm.userPhone.data}
 
                 roles = ['User']
-                if form.userRole.data == 'Superuser':
+                if usrForm.userRole.data == 'Superuser':
                     roles.append('Superuser')
-                elif form.userRole.data == 'Administrator':
+                elif usrForm.userRole.data == 'Administrator':
                     roles.append('Superuser')
                     roles.append('Administrator')
 
                 dataDict['roles'] = roles
-                dataDict['groups'] = form.userGroups.data
+                dataDict['groups'] = usrForm.userGroups.data
                 newUser = postUser(dataDict)
                 if not 'error' in newUser:
                     apiMessage(newUser)
@@ -152,7 +162,7 @@ def userView(id=None, function=None):
 
                     sendMail(subject=subject,
                          sender='Henrik Poulsen',
-                         recipients=[form.userEmail.data],
+                         recipients=[usrForm.userEmail.data],
                          html_body=html,
                          text_body = None)
 
@@ -160,7 +170,7 @@ def userView(id=None, function=None):
                     return redirect(url_for('userBP.userView'))
                 else:
                     apiMessage(newUser)
-            return render_template('user/userForm.html', form=form, newGroupForm=newGroupForm, **kwargs)
+            return render_template('user/userForm.html', usrForm=usrForm, grpForm=grpForm, **kwargs)
 
     return render_template('listView.html', **kwargs)
 

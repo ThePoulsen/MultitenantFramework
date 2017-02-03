@@ -1,4 +1,6 @@
+## -*- coding: utf-8 -*-
 # project/config.py
+
 import os
 import vars
 
@@ -32,3 +34,8 @@ BCRYPT_LOG_ROUNDS                   = 12
 
 # Flask-htmlmin settings
 MINIFY_PAGE                         = True
+
+# Flask-sijax
+path = os.path.join('.', os.path.dirname(__file__), 'app/static/js/sijax/')
+SIJAX_STATIC_PATH = path
+SIJAX_JSON_URI = 'app/static/js/sijax/json2.js'

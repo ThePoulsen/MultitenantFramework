@@ -1,10 +1,10 @@
 ## -*- coding: utf-8 -*-
-## project/app/__init__.py
 
 from flask import Flask, render_template, url_for, g, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_htmlmin import HTMLMIN
+import flask_sijax
 import os
 
 # Set unicode encoding
@@ -24,6 +24,9 @@ db = SQLAlchemy(app)
 # Flask-mail
 mail = Mail(app)
 
+# Flask-sijax
+flask_sijax.Sijax(app)
+
 # HTML min
 #HTMLMIN(app)
 
@@ -40,7 +43,7 @@ from app.user.views import userBP
 app.register_blueprint(adminBP, url_prefix='/admin')
 app.register_blueprint(authBP, url_prefix='/auth')
 app.register_blueprint(settingsBP, url_prefix='/settings')
-app.register_blueprint(userBP, url_prefix='/user')
+app.register_blueprint(userBP, url_prefix='/usr')
 
 
 # indexView

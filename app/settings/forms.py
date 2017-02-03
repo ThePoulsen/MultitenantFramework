@@ -1,5 +1,4 @@
 ## -*- coding: utf-8 -*-
-## project/app/settings/forms.py
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, TextAreaField, SelectMultipleField, BooleanField, IntegerField
